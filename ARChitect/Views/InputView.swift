@@ -7,6 +7,9 @@ struct InputView: View {
     
     @State private var message: String = ""
     
+    @EnvironmentObject private var sessionHandler: SessionHandler
+    @EnvironmentObject private var entityService: EntityService
+    
     var body: some View {
         HStack {
             if isLoading {

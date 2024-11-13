@@ -51,7 +51,12 @@ struct InputView: View {
     }
     
     private func loadEntity(_ input: String) async {
-        
+        do {
+            guard let entity = try await entityService.fetchEntity(input: input) else { return }
+            sessionHandler.addEntity(entity)
+        } catch {
+            print(error)
+        }
     }
 }
 

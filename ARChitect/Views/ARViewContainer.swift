@@ -12,6 +12,7 @@ struct ARViewContainer: UIViewRepresentable {
         guard ARConfiguration.isSupported else { return arView }
         
         sessionHandler.arView = arView
+        arView.session.delegate = sessionHandler
         
         return arView
     }

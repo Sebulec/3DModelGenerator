@@ -8,6 +8,8 @@ protocol EntityRepository {
 struct EntityRepositoryImpl: EntityRepository {
     
     func fetchEntity(input: String) async throws -> Entity? {
-        return Entity(id: "dummy id", url: URL(string: "http://udemy.com")!)
+        guard let url = Bundle.main.url(forResource: "Duck", withExtension: "glb") else { return nil }
+        
+        return Entity(id: UUID().uuidString, url: url)
     }
 }

@@ -7,6 +7,9 @@ struct InputView: View {
     
     @State private var message: String = ""
     
+    @State private var errorMessage: String?
+    @State private var alertIsPresented = false
+    
     @EnvironmentObject private var sessionHandler: SessionHandler
     @EnvironmentObject private var entityService: EntityService
     
@@ -36,6 +39,9 @@ struct InputView: View {
             }
         }
         .padding()
+        .alert(errorMessage ?? "", isPresented: $alertIsPresented) {
+            Button("OK", role: .cancel) {}
+        }
     }
     
     private func sendMessage() {
@@ -55,7 +61,11 @@ struct InputView: View {
             guard let entity = try await entityService.fetchEntity(input: input) else { return }
             sessionHandler.addEntity(entity)
         } catch {
-            print(error)
+            alertIsPresented = true
+            self.errorMessage = "Failed to fetch 3D model"
+        }
+        withAnimation {
+            isLoading = false
         }
     }
 }

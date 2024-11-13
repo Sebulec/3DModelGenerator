@@ -7,6 +7,12 @@ protocol EntityRepository {
 
 struct EntityRepositoryImpl: EntityRepository {
     
+    private let fileService: FileService
+    
+    init(fileService: FileService) {
+        self.fileService = fileService
+    }
+    
     func fetchEntity(input: String) async throws -> Entity? {
         guard let url = Bundle.main.url(forResource: "Duck", withExtension: "glb") else { return nil }
         

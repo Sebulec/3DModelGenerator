@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     private let sessionHandler = SessionHandler()
     private let entityService = EntityService(
-        entityRepository: EntityRepositoryImpl()
+        entityRepository: EntityRepositoryImpl(fileService: FileServiceImpl())
     )
     @State private var isShowingSheet = true
     

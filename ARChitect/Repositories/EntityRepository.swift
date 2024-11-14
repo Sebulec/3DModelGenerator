@@ -9,20 +9,22 @@ protocol EntityRepository {
 struct EntityRepositoryImpl: EntityRepository {
     
     private let fileService: FileService
+    private let meshRepository: MeshRepository
     
-    init(fileService: FileService) {
+    init(fileService: FileService, meshRepository: MeshRepository) {
         self.fileService = fileService
+        self.meshRepository = meshRepository
     }
     
     func fetchEntity(input: String) async throws -> Entity? {
         guard let imageResponse = try await obtainImage(input: input) else { return nil }
         
-        print(imageResponse)
-        let image = UIImage(data: imageResponse)
+        guard let meshResponse = try await meshRepository.fetchMesh(imageData: imageResponse) else { return nil }
         
-        guard let url = Bundle.main.url(forResource: "Duck", withExtension: "glb") else { return nil }
-        
-        return Entity(id: UUID().uuidString, url: url)
+        let id = UUID().uuidString
+        let url = try fileService.saveFile(data: meshResponse, filename: "\(id).glb")
+                
+        return Entity(id: id, url: url)
     }
     
     private func obtainImage(input: String) async throws -> Data? {

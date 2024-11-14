@@ -12,7 +12,6 @@ final class SessionHandler: NSObject, ObservableObject {
             let scene = GLTFKit2.SCNScene.init(gltfAsset: asset)
             
             guard let boxNode = scene.rootNode.childNodes.first else { return }
-            boxNode.scale = .init(x: 0.001, y: 0.001, z: 0.001)
             
             let planeAnchor = ARAnchor(name: "horizontalPlane", transform: simd_float4x4(SCNMatrix4Identity))
             
